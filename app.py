@@ -20,7 +20,7 @@ def get_args():
     parser = argparse.ArgumentParser()
 
     parser.add_argument("--device", type=int, default=0)
-    parser.add_argument("--width", help='cap width', type=int, default=960)
+    parser.add_argument("--width", help='cap width', type=int, default=640)
     parser.add_argument("--height", help='cap height', type=int, default=540)
 
     parser.add_argument('--use_static_image_mode', action='store_true')
@@ -61,7 +61,7 @@ def main():
     mp_hands = mp.solutions.hands
     hands = mp_hands.Hands(
         static_image_mode=use_static_image_mode,
-        max_num_hands=1,
+        max_num_hands=2,
         min_detection_confidence=min_detection_confidence,
         min_tracking_confidence=min_tracking_confidence,
     )
@@ -282,10 +282,15 @@ def logging_csv(number, mode, landmark_list, point_history_list):
     if mode == 0:
         pass
     if mode == 1 and (0 <= number <= 9):
-        csv_path = 'model/keypoint_classifier/keypoint.csv'
-        with open(csv_path, 'a', newline="") as f:
+        csv_path = 'model/keypoint_classifier/data/data_' + str(number) + '.csv'
+        with open(csv_path,'a',newline="") as f:
             writer = csv.writer(f)
             writer.writerow([number, *landmark_list])
+
+        # csv_path = 'model/keypoint_classifier/keypoint.csv'
+        # with open(csv_path, 'a', newline="") as f:
+        #     writer = csv.writer(f)
+        #     writer.writerow([number, *landmark_list])
     if mode == 2 and (0 <= number <= 9):
         csv_path = 'model/point_history_classifier/point_history.csv'
         with open(csv_path, 'a', newline="") as f:
